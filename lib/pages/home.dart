@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ? Container(
               decoration: BoxDecoration(
                   gradient: LinearGradient(
-                      colors: [Colors.lightBlue, Colors.blue],
+                      colors: [Colors.green, Colors.blue],
                       begin: Alignment.bottomCenter,
                       end: Alignment.bottomRight)),
               child: Center(
@@ -50,9 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
                   gradient: LinearGradient(
-                      colors: [Colors.lightBlue, Colors.blue],
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.bottomRight)),
+                      colors: [Colors.green, Colors.blue],
+                      begin: Alignment.topCenter,
+                      end: Alignment.center)),
               child: ListView(
                 children: [
                   SizedBox(
@@ -68,11 +68,122 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(height: 20),
                   Center(
                     child: Image.network(
-                        'http:${_currentWeather?['current']['condition']['icon']}'),
+                      'http:${_currentWeather?['current']['condition']['icon']}',
+                      height: 100,
+                      width: 100,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Center(
+                    child: Text(
+                      (_currentWeather?["current"]["temp_c"]).toString() +
+                          " °C",
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Text(
+                      _currentWeather?["current"]["condition"]["text"],
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 25),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        'Max: ${_currentWeather?["forecast"]["forecastday"][0]["day"]["maxtemp_c"]} °C',
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white70,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                          'Min: ${_currentWeather?["forecast"]["forecastday"][0]["day"]["mintemp_c"]} °C',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.w600))
+                    ],
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      buildWeatherBox("Sunrise", Icons.sunny,
+                          "${_currentWeather?["forecast"]["forecastday"][0]["astro"]["sunrise"]}"),
+                      buildWeatherBox("Sunset", Icons.brightness_3,
+                          "${_currentWeather?["forecast"]["forecastday"][0]["astro"]["sunset"]}"),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      buildWeatherBox("Humidity", Icons.water_drop,
+                          "${_currentWeather?['forecast']['forecastday'][0]['day']['avghumidity']}"),
+                      buildWeatherBox("Windspeed", Icons.air,
+                          "${_currentWeather?["current"]["wind_kph"]}")
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text("7-days Forecast"),
                   )
                 ],
               ),
             ),
+    );
+  }
+
+  Widget buildWeatherBox(String label, IconData icon, String data) {
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20),
+        bottomRight: Radius.circular(20),
+      ),
+      child: Container(
+        color: Colors.blue[600],
+        width: 130,
+        height: 130,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                  color: Colors.white60,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600),
+            ),
+            Icon(
+              icon,
+              color: Colors.white38,
+            ),
+            Text(
+              data,
+              style: TextStyle(
+                  color: Colors.white60,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

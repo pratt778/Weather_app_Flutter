@@ -10,6 +10,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final WeatherService _weatherService = WeatherService();
+  final TextEditingController _controller = TextEditingController();
   String _city = "Kathmandu";
   Map<String, dynamic>? _currentWeather;
 
@@ -17,6 +18,41 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     FetchWeatherData();
+  }
+
+  void showCityDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Enter a city Name"),
+            content: TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+              ),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Cancel")),
+              TextButton(
+                  onPressed: () {
+                    if (_controller.text != '') {
+                      setState(() {
+                        _city = _controller.text;
+                      });
+                      Navigator.pop(context);
+                      _controller.text = "";
+                      FetchWeatherData();
+                    }
+                  },
+                  child: Text("Submit")),
+            ],
+          );
+        });
   }
 
   Future<void> FetchWeatherData() async {
@@ -58,12 +94,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    _city,
-                    style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                  InkWell(
+                    onTap: () => showCityDialog(),
+                    child: Text(
+                      _city,
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
                   ),
                   SizedBox(height: 20),
                   Center(

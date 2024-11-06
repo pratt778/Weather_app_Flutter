@@ -17,8 +17,9 @@ class WeatherService {
     }
   }
 
+//  http://api.weatherapi.com/v1/forecast.json?key=<YOUR_API_KEY>&q=07112&days=7
   Future<Map<String, dynamic>> fetch7daysWeather(String city) async {
-    final url = '$apiUrl?key=$apiKey&q=$city&day=7&aqi=no&alert=no';
+    final url = '$apiUrl?key=$apiKey&q=$city&days=7&aqi=no&alert=no';
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       return json.decode(response.body);

@@ -14,6 +14,7 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: HomeScreen(),
       title: "Weather App",
+      
     );
   }
 }

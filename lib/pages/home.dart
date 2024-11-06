@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app_flutter/pages/forecast.dart';
 import 'package:weather_app_flutter/services/weather_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -180,7 +181,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 20,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ForecastScreen(city: _city)));
+                    },
                     child: Text("7-days Forecast"),
                   )
                 ],
